@@ -1,3 +1,4 @@
+import 'package:chatapplication/Auth/auth.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -95,6 +96,8 @@ class FormWidget extends StatefulWidget {
 }
 
 class _FormWidgetState extends State<FormWidget> {
+  final TextEditingController _mail = TextEditingController();
+  final TextEditingController _pass = TextEditingController();
   bool isHidden = true;
   bool isHidden1 = true;
   @override
@@ -147,6 +150,7 @@ class _FormWidgetState extends State<FormWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: TextFormField(
+                controller: _mail,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(EvaIcons.email, color: Colors.black),
                   border: InputBorder.none,
@@ -175,6 +179,7 @@ class _FormWidgetState extends State<FormWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15),
               child: TextFormField(
+                controller: _pass,
                 obscureText: isHidden,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(EvaIcons.unlock, color: Colors.black),
@@ -250,7 +255,11 @@ class _FormWidgetState extends State<FormWidget> {
                     gradient: const LinearGradient(
                         colors: [Color(0xffff7043), Color(0xfff9a425)])),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print('object');
+                    Auth()
+                        .createUserWithEmailAndPassword(_mail.text, _pass.text);
+                  },
                   style: ElevatedButton.styleFrom(
                       // splashFactory: InkRipple.splashFactory,
                       primary: Colors.transparent,
@@ -261,12 +270,10 @@ class _FormWidgetState extends State<FormWidget> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
-                        child: GestureDetector(
-                          child: Text(
-                            'Sign Up',
-                            style: GoogleFonts.montserrat(
-                                color: Colors.white, fontSize: 20),
-                          ),
+                        child: Text(
+                          'Sign Up',
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white, fontSize: 20),
                         ),
                       ),
                       const Icon(
