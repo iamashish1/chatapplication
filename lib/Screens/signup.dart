@@ -1,4 +1,5 @@
 import 'package:chatapplication/Auth/auth.dart';
+import 'package:chatapplication/Helpers/validator.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool isSignIn = false;
+
   @override
   Widget build(BuildContext context) {
     return isSignIn
@@ -35,7 +37,7 @@ class _SignUpState extends State<SignUp> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Sing Up\n',
+                            text: 'Sign Up\n',
                             style: GoogleFonts.ubuntu(
                                 fontWeight: FontWeight.w900, fontSize: 40),
                           ),
@@ -100,9 +102,11 @@ class _FormWidgetState extends State<FormWidget> {
   final TextEditingController _pass = TextEditingController();
   bool isHidden = true;
   bool isHidden1 = true;
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Column(
         children: [
           Container(
@@ -122,11 +126,19 @@ class _FormWidgetState extends State<FormWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: TextFormField(
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(EvaIcons.person, color: Colors.black),
+                validator: (value) {
+                  if (value!.trim().length > 3) {
+                    return null;
+                  }
+                  return 'Need more than three characters';
+                },
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(EvaIcons.person, color: Colors.black),
                   border: InputBorder.none,
                   hintText: 'Full Name',
-                  hintStyle: TextStyle(
+                  errorStyle: GoogleFonts.montserrat(
+                      color: Colors.amber, fontStyle: FontStyle.italic),
+                  hintStyle: const TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.w900),
                 ),
               ),
@@ -150,12 +162,20 @@ class _FormWidgetState extends State<FormWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: TextFormField(
+                validator: (value) {
+                  if (!emailValiadtor(value!.trim())) {
+                    return 'Enter a valid email address';
+                  }
+                  return null;
+                },
                 controller: _mail,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(EvaIcons.email, color: Colors.black),
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(EvaIcons.email, color: Colors.black),
                   border: InputBorder.none,
                   hintText: 'Email',
-                  hintStyle: TextStyle(
+                  errorStyle: GoogleFonts.montserrat(
+                      color: Colors.amber, fontStyle: FontStyle.italic),
+                  hintStyle: const TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.w900),
                 ),
               ),
@@ -179,9 +199,17 @@ class _FormWidgetState extends State<FormWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15),
               child: TextFormField(
+                validator: (value) {
+                  if (!passwordValiadtor(value!.trim())) {
+                    return 'Enter a valid  password';
+                  }
+                  return null;
+                },
                 controller: _pass,
                 obscureText: isHidden,
                 decoration: InputDecoration(
+                  errorStyle: GoogleFonts.montserrat(
+                      color: Colors.amber, fontStyle: FontStyle.italic),
                   prefixIcon: const Icon(EvaIcons.unlock, color: Colors.black),
                   suffixIcon: IconButton(
                       onPressed: () {
@@ -220,6 +248,12 @@ class _FormWidgetState extends State<FormWidget> {
               padding: const EdgeInsets.only(left: 15.0),
               child: TextFormField(
                 obscureText: isHidden1,
+                validator: (value) {
+                  if (value!.trim() == _pass.text.trim()) {
+                    return null;
+                  }
+                  return 'Enter a matching  password';
+                },
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                       onPressed: () {
@@ -233,6 +267,8 @@ class _FormWidgetState extends State<FormWidget> {
                   prefixIcon: const Icon(EvaIcons.unlock, color: Colors.black),
                   border: InputBorder.none,
                   hintText: 'Confirm Password',
+                  errorStyle: GoogleFonts.montserrat(
+                      color: Colors.amber, fontStyle: FontStyle.italic),
                   hintStyle: const TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.w900),
                 ),
@@ -256,9 +292,10 @@ class _FormWidgetState extends State<FormWidget> {
                         colors: [Color(0xffff7043), Color(0xfff9a425)])),
                 child: TextButton(
                   onPressed: () {
-                    print('object');
-                    Auth()
-                        .createUserWithEmailAndPassword(_mail.text, _pass.text);
+                    if (_formKey.currentState!.validate()) {
+                      Auth().createUserWithEmailAndPassword(
+                          _mail.text.trim(), _pass.text.trim());
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                       // splashFactory: InkRipple.splashFactory,

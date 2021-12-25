@@ -1,3 +1,5 @@
+import 'package:chatapplication/Auth/auth.dart';
+import 'package:chatapplication/Helpers/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -103,7 +105,7 @@ class _SignInState extends State<SignIn> {
                         ],
                       ),
                       style:
-                          ElevatedButton.styleFrom(primary: Colors.amber[900]),
+                          ElevatedButton.styleFrom(primary: Colors.blue[900]),
                     ),
                   ),
                   Container(
@@ -129,7 +131,7 @@ class _SignInState extends State<SignIn> {
                         ],
                       ),
                       style:
-                          ElevatedButton.styleFrom(primary: Colors.amber[900]),
+                          ElevatedButton.styleFrom(primary: Colors.orange[900]),
                     ),
                   ),
                 ],
@@ -148,10 +150,14 @@ class FormWidget extends StatefulWidget {
 }
 
 class _FormWidgetState extends State<FormWidget> {
+  final TextEditingController _mail = TextEditingController();
+  final TextEditingController _pass = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool isHidden = true;
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Column(
         children: [
           Container(
@@ -171,6 +177,13 @@ class _FormWidgetState extends State<FormWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: TextFormField(
+                controller: _mail,
+                validator: (value) {
+                  if (!emailValiadtor(value!.trim())) {
+                    return 'Enter a valid email address';
+                  }
+                  return null;
+                },
                 decoration: const InputDecoration(
                   prefixIcon: Icon(EvaIcons.email, color: Colors.black),
                   border: InputBorder.none,
@@ -198,6 +211,13 @@ class _FormWidgetState extends State<FormWidget> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15),
               child: TextFormField(
+                controller: _pass,
+                validator: (value) {
+                  if (!passwordValiadtor(value!.trim())) {
+                    return 'Enter a valid  password';
+                  }
+                  return null;
+                },
                 obscureText: isHidden,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(EvaIcons.unlock, color: Colors.black),
@@ -236,7 +256,12 @@ class _FormWidgetState extends State<FormWidget> {
                     gradient: const LinearGradient(
                         colors: [Color(0xffff7043), Color(0xfff9a425)])),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Auth().signInWithEmailPassword(
+                          _mail.text.trim(), _pass.text.trim());
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                       // splashFactory: InkRipple.splashFactory,
                       primary: Colors.transparent,

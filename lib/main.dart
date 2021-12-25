@@ -1,3 +1,5 @@
+import 'package:chatapplication/Screens/chathomescreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'Screens/signin.dart';
@@ -14,18 +16,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Chat',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-        // fontFamily: GoogleFonts.varelaRound().toString(),
-        primaryColor: Colors.white,
-        colorScheme: ThemeData().colorScheme.copyWith(
-              secondary: Colors.orange,
-            ),
-      ),
-      home: const SignIn(),
-    );
+    return Builder(builder: (context) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Chat',
+        theme: ThemeData(
+          primarySwatch: Colors.amber,
+          // fontFamily: GoogleFonts.varelaRound().toString(),
+          primaryColor: Colors.white,
+          colorScheme: ThemeData().colorScheme.copyWith(
+                secondary: Colors.orange,
+              ),
+        ),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+            final isSignedIn = snapshot.data != null;
+            return isSignedIn ? const ChatHomeScreen() : const SignIn();
+          },
+        ),
+      );
+    });
   }
 }
