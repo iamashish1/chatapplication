@@ -1,8 +1,11 @@
+import 'package:chatapplication/FireStroreRepo/datarepository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Auth with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  DataRepository _repo = DataRepository();
 
   Future<User?> createUserWithEmailAndPassword(
       String email, String pass) async {
@@ -10,6 +13,11 @@ class Auth with ChangeNotifier {
       // ignore: unused_local_variable
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: pass);
+      print(userCredential.user!.uid + 'niceeee');
+      print(userCredential.user!.email! + 'niceeee');
+
+      _repo.addUser(userCredential.user!.uid,
+          email: userCredential.user!.email);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         // print('The password provided is too weak.');
