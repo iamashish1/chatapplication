@@ -9,7 +9,7 @@ class DataRepository {
     return collection.snapshots();
   }
 
-//add user to users collection
+//add user to Users collection
   Future<void> addUser(userId, {email}) {
     return collection.doc(userId).set({'id': userId, 'email': email});
   }
