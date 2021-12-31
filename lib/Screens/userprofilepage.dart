@@ -57,7 +57,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               width: MediaQuery.of(context).size.shortestSide *
                                   0.3,
                               child: const CircleAvatar(
-                                backgroundColor: Colors.pinkAccent,
+                                backgroundColor: Colors.deepOrange,
                               ),
                             ),
                             Padding(
