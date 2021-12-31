@@ -69,7 +69,7 @@ class _PrivateChatState extends State<PrivateChat> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   suffixIcon: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       EvaIcons.paperPlane,
                       color: Colors.deepOrange,
                     ),
