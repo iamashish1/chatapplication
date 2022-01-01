@@ -1,5 +1,6 @@
 import 'package:chatapplication/Auth/auth.dart';
 import 'package:chatapplication/FireStroreRepo/datarepository.dart';
+import 'package:chatapplication/Models/user.dart';
 import 'package:chatapplication/Screens/privatechat.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,47 +34,52 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: DataRepository().getUsers(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Builder(builder: (context) {
-              return PageView(
-                physics: NeverScrollableScrollPhysics(),
-                controller: _pageController,
-                children: [
-                  isLoading
-                      ? Scaffold(
-                          body: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
-                      : Scaffold(
-                          appBar: AppBar(
-                            backgroundColor: Colors.deepOrange,
-                            elevation: 0.0,
-                            title: Text(
-                              'Chat Messenger',
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.white, fontSize: 20),
+    return StreamProvider<List<User>>(
+      initialData: [],
+      create: (context) => DataRepository().getUsers(),
+      child: Builder(builder: (context) {
+        // ignore: unused_local_variable
+        var _users = Provider.of<List<User>>(context);
+        return PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          children: [
+            isLoading
+                ? Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Scaffold(
+                    appBar: AppBar(
+                      backgroundColor: Colors.deepOrange,
+                      elevation: 0.0,
+                      title: Text(
+                        'Chat Messenger',
+                        style: GoogleFonts.montserrat(
+                            color: Colors.white, fontSize: 20),
+                      ),
+                      actions: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              _pageController.nextPage(
+                                  duration: Duration(microseconds: 200),
+                                  curve: Curves.easeIn);
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
                             ),
-                            actions: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 8.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _pageController.nextPage(
-                                        duration: Duration(microseconds: 200),
-                                        curve: Curves.easeIn);
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
-                          body: Column(
+                        ),
+                      ],
+                    ),
+                    body: _users.isEmpty
+                        ? Center(
+                            child: CircularProgressIndicator(
+                                color: Colors.deepOrange))
+                        : Column(
                             children: [
                               Container(
                                 color: Colors.deepOrange,
@@ -158,7 +164,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                                             backgroundColor: Colors.grey,
                                           ),
                                           Spacer(),
-                                          Text('Deepak Batala',
+                                          Text('hhhh',
                                               style: GoogleFonts.montserrat(
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 18)),
@@ -178,13 +184,11 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                               )),
                             ],
                           ),
-                        ),
-                  UserProfilePage(_pageController),
-                ],
-              );
-            });
-          }
-          return CircularProgressIndicator();
-        });
+                  ),
+            UserProfilePage(_pageController),
+          ],
+        );
+      }),
+    );
   }
 }
