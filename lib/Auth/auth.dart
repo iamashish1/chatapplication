@@ -1,11 +1,10 @@
 import 'package:chatapplication/FireStroreRepo/datarepository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Auth with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  DataRepository _repo = DataRepository();
+  final DataRepository _repo = DataRepository();
 
   Future<User?> createUserWithEmailAndPassword(
       String email, String pass) async {
@@ -34,6 +33,7 @@ class Auth with ChangeNotifier {
     // User? user;
 
     try {
+      // ignore: unused_local_variable
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,

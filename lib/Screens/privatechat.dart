@@ -1,16 +1,18 @@
+import 'package:chatapplication/Models/user.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PrivateChat extends StatefulWidget {
-  const PrivateChat({Key? key}) : super(key: key);
+  final User user;
+  const PrivateChat({Key? key, required this.user}) : super(key: key);
 
   @override
   State<PrivateChat> createState() => _PrivateChatState();
 }
 
 class _PrivateChatState extends State<PrivateChat> {
-  TextEditingController _myMessage = TextEditingController();
+  final TextEditingController _myMessage = TextEditingController();
 
   List<String> msg = [];
   @override
@@ -19,7 +21,7 @@ class _PrivateChatState extends State<PrivateChat> {
       appBar: AppBar(
         backgroundColor: Colors.deepOrange,
         elevation: 0.0,
-        title: Text('Deepak Batala'),
+        title: Text(widget.user.email.toString()),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -29,9 +31,10 @@ class _PrivateChatState extends State<PrivateChat> {
       body: Column(
         children: [
           Expanded(
-            child: msg.length == 0
+            child: msg.isEmpty
                 ? Center(
-                    child: Text('Start Chatting...'),
+                    child: Text(
+                        'say Hi to ' + widget.user.email.toString() + ' ..'),
                   )
                 : ListView.builder(
                     reverse: true,
@@ -57,7 +60,7 @@ class _PrivateChatState extends State<PrivateChat> {
           ),
           Container(
             height: 75,
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Colors.deepOrange.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(20)),

@@ -40,6 +40,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
       child: Builder(builder: (context) {
         // ignore: unused_local_variable
         var _users = Provider.of<List<User>>(context);
+        print(_users);
         return PageView(
           physics: NeverScrollableScrollPhysics(),
           controller: _pageController,
@@ -110,7 +111,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                                 ),
                                 height: 100,
                                 child: ListView.builder(
-                                  itemCount: 10,
+                                  itemCount: _users.length,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return (index == 0)
@@ -131,7 +132,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                                         : Container(
                                             margin: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),
-                                            child: CircleAvatar(
+                                            child: const CircleAvatar(
                                               maxRadius: 30,
                                               backgroundColor: Colors.black,
                                             ),
@@ -141,21 +142,21 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                               ),
                               Expanded(
                                   child: ListView.builder(
-                                itemCount: 10,
+                                itemCount: _users.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PrivateChat()));
+                                              builder: (context) => PrivateChat(
+                                                  user: _users[index])));
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(8),
                                       child: Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.center,
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
@@ -164,7 +165,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                                             backgroundColor: Colors.grey,
                                           ),
                                           Spacer(),
-                                          Text('hhhh',
+                                          Text(_users[index].email ?? 'unknown',
                                               style: GoogleFonts.montserrat(
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 18)),
