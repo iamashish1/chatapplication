@@ -19,19 +19,15 @@ class DataRepository {
 
   List<User> usersListFromSnapshots(QuerySnapshot querySnapshot) {
     return querySnapshot.docs
-        .map((e) => User(id: e.get('id') ?? '', email: e.get('email') ?? ''))
+        .map(
+          (e) => User(
+            id: e.get('id') ?? '',
+            email: e.get('email') ?? '',
+            name: e.get('name') ?? '',
+          ),
+        )
         .toList();
   }
-
-  // Future<List<User>> getUsers() async {
-  //   var hhh = await collection.doc().snapshots();
-  //   print(hhh.toString());
-  //   print('ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-
-  //   return hhh
-  //       .map((e) => User(id: e.get('id'), email: e.get('email')))
-  //       .toList();
-  // }
 
 //add user to Users collection
   Future<void> addUser(userId, {email}) {
@@ -60,7 +56,7 @@ class DataRepository {
 
   Stream<List<Message>> getMessages() {
     return messageCollection
-        .orderBy('sentAt')
+        .orderBy('sentAT', descending: true)
         .snapshots()
         .map(messagesListFromSnapshots);
   }

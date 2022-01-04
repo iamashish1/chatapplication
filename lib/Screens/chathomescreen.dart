@@ -38,20 +38,20 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
       create: (context) => DataRepository().getUsers(),
       child: Builder(builder: (context) {
         var _users = Provider.of<List<User>>(context);
-        print(_users);
+
         return PageView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
           children: [
             isLoading
-                ? Scaffold(
+                ? const Scaffold(
                     body: Center(
                       child: CircularProgressIndicator(),
                     ),
                   )
                 : Scaffold(
                     appBar: AppBar(
-                      backgroundColor: Colors.deepOrange,
+                      backgroundColor: Color(0xff009ccc),
                       elevation: 0.0,
                       title: Text(
                         'Chat Messenger',
@@ -81,7 +81,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                         : Column(
                             children: [
                               Container(
-                                color: Colors.deepOrange,
+                                color: Color(0xff009ccc),
                                 width: double.infinity,
                                 child: Container(
                                   margin: EdgeInsets.all(10),
@@ -119,7 +119,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                                             child: CircleAvatar(
                                               maxRadius: 40,
                                               backgroundColor:
-                                                  Colors.yellow[900],
+                                                  Color(0xff009ccc),
                                               child: Icon(
                                                 EvaIcons.plus,
                                                 color: Colors.white,
@@ -163,7 +163,8 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                                             backgroundColor: Colors.grey,
                                           ),
                                           Spacer(),
-                                          Text(_users[index].email ?? 'unknown',
+                                          Text(
+                                              _users[index].name!.toUpperCase(),
                                               style: GoogleFonts.montserrat(
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 18)),

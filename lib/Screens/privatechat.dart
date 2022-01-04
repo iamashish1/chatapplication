@@ -27,14 +27,19 @@ class _PrivateChatState extends State<PrivateChat> {
       initialData: [],
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.deepOrange,
+          toolbarHeight: 75,
+          backgroundColor: Colors.white,
           elevation: 0.0,
-          title: Text(widget.user.email.toString()),
+          title: Text(
+            widget.user.name.toString().toUpperCase(),
+            style: GoogleFonts.montserrat(color: Colors.grey),
+          ),
           leading: IconButton(
+              color: Colors.grey,
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(EvaIcons.arrowIosBackOutline)),
+              icon: const Icon(EvaIcons.arrowIosBackOutline)),
         ),
         body: Builder(builder: (context) {
           var _messages = Provider.of<List<Message>>(context);
@@ -43,17 +48,19 @@ class _PrivateChatState extends State<PrivateChat> {
                   (element.receiverId == widget.user.id &&
                       element.senderId ==
                           fire.FirebaseAuth.instance.currentUser!.uid) ||
-                  element.senderId == widget.user.id)
+                  (element.receiverId ==
+                          fire.FirebaseAuth.instance.currentUser!.uid &&
+                      element.senderId == widget.user.id))
               .toList();
-          print(_thisMessage);
 
           return Column(
             children: [
               Expanded(
                 child: _thisMessage.isEmpty
                     ? Center(
-                        child: Text(
-                            'say hi to' + widget.user.email.toString() + ' ..'),
+                        child: Text('say hi to '.toUpperCase() +
+                            widget.user.name.toString().toUpperCase() +
+                            ' ..'),
                       )
                     : ListView.builder(
                         reverse: true,
@@ -63,23 +70,34 @@ class _PrivateChatState extends State<PrivateChat> {
                           if (_thisMessage[index].senderId ==
                               fire.FirebaseAuth.instance.currentUser!.uid) {
                             isSender = true;
-                            print('true');
                           } else {
                             isSender = false;
-                            print('false');
                           }
                           return Row(
                             mainAxisAlignment: isSender
-                                ? MainAxisAlignment.end
-                                : MainAxisAlignment.start,
+                                ? MainAxisAlignment.start
+                                : MainAxisAlignment.end,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 10, top: 10, bottom: 10, right: 10),
-                                child: Text(
-                                  _thisMessage[index].message,
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 20,
+                                child: Container(
+                                  constraints: const BoxConstraints(
+                                      minWidth: 70, maxWidth: 200),
+                                  margin: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      color: !isSender
+                                          ? Colors.purple.withOpacity(0.9)
+                                          : const Color(0xff3845b5)
+                                              .withOpacity(0.9),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      _thisMessage[index].message,
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 15, color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -92,19 +110,22 @@ class _PrivateChatState extends State<PrivateChat> {
                 height: 75,
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                    color: Colors.deepOrange.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(20)),
+                    border: Border.all(
+                        width: 4,
+                        color: Colors.blue[900]!,
+                        style: BorderStyle.solid),
+                    borderRadius: BorderRadius.circular(10)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: TextField(
                     controller: _myMessage,
-                    maxLines: 4,
+                    maxLines: 2,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       suffixIcon: IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           EvaIcons.paperPlane,
-                          color: Colors.deepOrange,
+                          color: Colors.blue[900]!,
                         ),
                         onPressed: () {
                           if (_myMessage.text.trim().isNotEmpty) {

@@ -22,26 +22,26 @@ class _UserProfilePageState extends State<UserProfilePage> {
               child: CircularProgressIndicator(
               color: Colors.red,
             ))
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.longestSide * 0.1,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        icon: Icon(
-                          EvaIcons.arrowIosBack,
-                        ),
-                        onPressed: () {
-                          widget._pageController.previousPage(
-                              duration: Duration(milliseconds: 220),
-                              curve: Curves.easeInOut);
-                        },
+          : Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.longestSide * 0.1,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: Icon(
+                        EvaIcons.arrowIosBack,
                       ),
+                      onPressed: () {
+                        widget._pageController.previousPage(
+                            duration: Duration(milliseconds: 220),
+                            curve: Curves.easeInOut);
+                      },
                     ),
                   ),
-                  Row(
+                ),
+                Expanded(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
@@ -52,8 +52,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                   0.3,
                               width: MediaQuery.of(context).size.shortestSide *
                                   0.3,
-                              child: const CircleAvatar(
-                                backgroundColor: Colors.deepOrange,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.blue[900],
                               ),
                             ),
                             Padding(
@@ -69,7 +69,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       )
                     ],
                   ),
-                  ElevatedButton(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.blue[900],
+                          minimumSize: Size(double.infinity, 65)),
                       onPressed: () {
                         setState(() {
                           _isLoading = true;
@@ -79,9 +85,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           _isLoading = false;
                         });
                       },
-                      child: Text('Sign Out'))
-                ],
-              ),
+                      child: Text(
+                        'Sign Out',
+                        style: TextStyle(fontSize: 20),
+                      )),
+                )
+              ],
             ),
     );
   }
