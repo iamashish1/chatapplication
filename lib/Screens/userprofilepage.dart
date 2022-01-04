@@ -2,7 +2,6 @@ import 'package:chatapplication/Auth/auth.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class UserProfilePage extends StatefulWidget {
   final PageController _pageController;
@@ -17,9 +16,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    // bool _auth = Provider.of<Auth>(context).isLoading;
-    // print(_auth);
     return Scaffold(
       body: _isLoading == true
           ? const Center(

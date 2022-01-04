@@ -1,12 +1,12 @@
-import 'package:chatapplication/Models/user.dart';
-
-import 'user.dart';
-
 class Message {
-  String id;
-  String content;
-  DateTime date;
-  User mesageTo;
+  String senderId;
+  String receiverId;
+  String message;
+  String sentAt;
 
-  Message(this.id, this.content, this.date, this.mesageTo);
+  Message(
+      {required this.senderId,
+      required this.receiverId,
+      required this.message,
+      required this.sentAt});
 }

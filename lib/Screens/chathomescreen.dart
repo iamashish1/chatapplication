@@ -1,4 +1,3 @@
-import 'package:chatapplication/Auth/auth.dart';
 import 'package:chatapplication/FireStroreRepo/datarepository.dart';
 import 'package:chatapplication/Models/user.dart';
 import 'package:chatapplication/Screens/privatechat.dart';
@@ -38,7 +37,6 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
       initialData: [],
       create: (context) => DataRepository().getUsers(),
       child: Builder(builder: (context) {
-        // ignore: unused_local_variable
         var _users = Provider.of<List<User>>(context);
         print(_users);
         return PageView(
